@@ -32,9 +32,10 @@ public class SecurityConfig {
         .cors(customizer -> customizer.disable())
         .httpBasic(customizer -> customizer.disable())
         .authorizeHttpRequests(customizer -> customizer
-            .requestMatchers("/api/hello/**", "/api/auth/**", "/api/register/**").permitAll()
+            .requestMatchers("/api/hello/**", "/api/auth/**", "/api/register/**", "/h2-console/**").permitAll()
             .requestMatchers("/api/admin/**").hasRole("ADMINISTRATOR")
             .requestMatchers("/api/user/**").hasRole("USER"))
+        .headers(customizer -> customizer.frameOptions(customizer1 -> customizer1.sameOrigin()))
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
