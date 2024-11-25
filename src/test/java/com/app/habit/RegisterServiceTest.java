@@ -60,7 +60,7 @@ class RegisterServiceTest {
         .created_at(LocalDateTime.now())
         .build();
 
-    when(passwordEncoder.encode(registerDto.getPassword())).thenReturn("encodedPassword1234");
+    when(passwordEncoder.encode(registerDto.getPassword())).thenReturn("encodedPassword123");
     when(userRepository.save(any(User.class))).thenReturn(user);
 
     // Act
