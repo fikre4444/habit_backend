@@ -61,7 +61,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     String token = jwtService.generateToken(user.getUsername());
     System.out.println("the token is " + token);
 
-    response.sendRedirect("http://localhost:3000?token=" + token);
+    response.sendRedirect("http://localhost:5173/handleRedirectLogin?token=" + token);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     response.getWriter().write("{\"token\":\"" + token + "\"}");

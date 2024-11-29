@@ -16,6 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.app.habit.filter.JwtFilter;
 import com.app.habit.service.MyUserDetailsService;
@@ -38,9 +43,22 @@ public class SecurityConfig {
   private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
   @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // Allow all paths
+            .allowedOrigins("http://localhost:5173") // Allow your frontend origin
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific HTTP methods
+            .allowedHeaders("*") // Allow all headers
+            .allowCredentials(true); // Allow crede
+      }
+    };
+  }
+
+  @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http = http.csrf(customzer -> customzer.disable())
-        .cors(customizer -> customizer.disable())
         .httpBasic(customizer -> customizer.disable())
         .authorizeHttpRequests(customizer -> customizer
             .requestMatchers("/api/hello/**", "/api/auth/**", "/api/register/**", "/h2-console/**", "/api/user/welcome")
