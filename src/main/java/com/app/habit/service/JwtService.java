@@ -6,6 +6,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class JwtService {
   @Autowired
   private UserRepository userRepository;
 
-  private String secretKey = "T+vwWyP3VuV7nFWQtup1eWkNWm9863s2d/Atx20gG7o=";
+  @Value("${security.secret.key}")
+  private String secretKey;
 
   public JwtService() {
     // this creates a dynamically generated secret key which then changes during

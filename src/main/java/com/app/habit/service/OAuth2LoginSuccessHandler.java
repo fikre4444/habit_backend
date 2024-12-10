@@ -6,6 +6,7 @@ import com.app.habit.domain.User;
 import com.app.habit.enums.RoleEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Value("${after.login.redirect}")
+  private String afterLoginRedirect;
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -61,7 +65,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     String token = jwtService.generateToken(user.getUsername());
     System.out.println("the token is " + token);
 
-    response.sendRedirect("http://localhost:5173/handleRedirectLogin?token=" + token);
+    response.sendRedirect(afterLoginRedirect + "?token=" + token);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     response.getWriter().write("{\"token\":\"" + token + "\"}");
